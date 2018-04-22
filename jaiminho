@@ -1,11 +1,45 @@
 #!/bin/sh
 
+# Make sure you have a CHANGELOG.md based on https://keepachangelog.com
+# Usage: DEPLOY_TAG="1.0.0" DEPLOY_APP="Your APP" SLACK_HOOK_URL="https://hooks.slack.com/services/AAA/BBB/some_hash" ./jaiminho slack
 notify_slack() {
-    echo "Notify slack"
+    echo "Notifying slack ..."
+
+
+    # Cut the CHANGELOG for TAG
+    DEPLOY_DESCRIPTION=$(sed -n "/## \[$DEPLOY_TAG\]/,/## \[.*\]/p" CHANGELOG.md | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\n/g')
+
+    # Generate Slack Payload Notification
+    cat <<EOF > slack_temp_notification.json
+{
+  "attachments": [
+    {
+      "pretext": "*$DEPLOY_APP - Tag: $DEPLOY_TAG*",
+      "color": "good",
+      "mrkdwn_in": ["fields"],
+      "fields": [
+        {
+          "title": "Changelog",
+          "value": "$DEPLOY_DESCRIPTION",
+          "short": false
+        }
+      ]
+    }
+  ]
+}
+EOF
+
+    # Notify Slack
+    curl -X POST -H 'Content-Type: application/json' -d @slack_temp_notification.json '$SLACK_HOOK_URL'
+
+    # Remove temp files
+    rm slack_temp_notification.json
 }
 
+# Usage: DEPLOY_TAG="1.0.0" NEW_RELIC_APP_ID="some_id" NEW_RELIC_API_KEY="some_api_key" ./jaiminho newrelic
 notify_newrelic() {
-    echo "Notify New Relic"
+    echo "Notifying New Relic ..."
+    curl -X POST "https://api.newrelic.com/v2/applications/$NEW_RELIC_APP_ID/deployments.json" -H "X-Api-Key:$NEW_RELIC_API_KEY" -i -H 'Content-Type: application/json' -d "{\"deployment\": {\"revision\": \"$DEPLOY_TAG\"}}"
 }
 
 if [ "$1" == "slack" ]; then
@@ -20,5 +54,3 @@ fi
 
 echo "Usage: ./jaiminho <newrelic|slack>"
 exit 1
-
-
