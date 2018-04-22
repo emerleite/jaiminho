@@ -1,0 +1,24 @@
+#!/bin/sh
+
+notify_slack() {
+    echo "Notify slack"
+}
+
+notify_newrelic() {
+    echo "Notify New Relic"
+}
+
+if [ "$1" == "slack" ]; then
+    notify_slack
+    exit 0
+fi
+
+if [ "$1" == "newrelic" ]; then
+    notify_newrelic
+    exit 0
+fi
+
+echo "Usage: ./jaiminho <newrelic|slack>"
+exit 1
+
+
