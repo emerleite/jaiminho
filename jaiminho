@@ -30,7 +30,7 @@ notify_slack() {
 EOF
 
     # Notify Slack
-    curl -X POST -H 'Content-Type: application/json' -d @slack_temp_notification.json '$SLACK_HOOK_URL'
+    curl -X POST -H 'Content-Type: application/json' -d @slack_temp_notification.json "$SLACK_HOOK_URL"
 
     # Remove temp files
     rm slack_temp_notification.json
@@ -42,6 +42,7 @@ notify_newrelic() {
     curl -X POST "https://api.newrelic.com/v2/applications/$NEW_RELIC_APP_ID/deployments.json" -H "X-Api-Key:$NEW_RELIC_API_KEY" -i -H 'Content-Type: application/json' -d "{\"deployment\": {\"revision\": \"$DEPLOY_TAG\"}}"
 }
 
+#Starting point
 if [ "$1" == "slack" ]; then
     notify_slack
     exit 0
