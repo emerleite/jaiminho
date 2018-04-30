@@ -3,6 +3,14 @@ A CLI tool for deployment notifications. Currently support Slack and New Relic
 
 ## Installing
 
+### Last stable version
+
+```sh
+$ curl https://raw.githubusercontent.com/emerleite/jaiminho/0.0.1/jaiminho > /path/to/jaiminho
+```
+
+### Development version (unstable)
+
 ```sh
 $ curl https://raw.githubusercontent.com/emerleite/jaiminho/master/jaiminho > /path/to/jaiminho
 ```
