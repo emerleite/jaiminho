@@ -42,6 +42,11 @@ notify_newrelic() {
     curl -X POST "https://api.newrelic.com/v2/applications/$NEW_RELIC_APP_ID/deployments.json" -H "X-Api-Key:$NEW_RELIC_API_KEY" -i -H 'Content-Type: application/json' -d "{\"deployment\": {\"revision\": \"$DEPLOY_TAG\"}}"
 }
 
+version() {
+    local version="0.0.1"
+    echo "Jaiminho $version"
+}
+
 #Starting point
 if [ "$1" == "slack" ]; then
     notify_slack
@@ -53,5 +58,10 @@ if [ "$1" == "newrelic" ]; then
     exit 0
 fi
 
-echo "Usage: ./jaiminho <newrelic|slack>"
+if [ "$1" == "--version" ]; then
+    version
+    exit 0
+fi
+
+echo "Usage: ./jaiminho <--version|newrelic|slack>"
 exit 1
