@@ -6,13 +6,15 @@ A CLI tool for deployment notifications. Currently support Slack and New Relic
 ### Last stable version
 
 ```sh
-$ curl https://raw.githubusercontent.com/emerleite/jaiminho/0.0.1/jaiminho > /path/to/jaiminho
+$ curl https://raw.githubusercontent.com/emerleite/jaiminho/0.0.2/jaiminho > ./jaiminho
+$ chmod 755 > ./jaiminho
 ```
 
 ### Development version (unstable)
 
 ```sh
-$ curl https://raw.githubusercontent.com/emerleite/jaiminho/master/jaiminho > /path/to/jaiminho
+$ curl https://raw.githubusercontent.com/emerleite/jaiminho/master/jaiminho > ./jaiminho
+$ chmod 755 > ./jaiminho
 ```
 
 ## Slack Notification
