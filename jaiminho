@@ -5,7 +5,6 @@
 notify_slack() {
     echo "Notifying slack ..."
 
-
     # Cut the CHANGELOG for TAG
     DEPLOY_DESCRIPTION=$(sed -n "/## \[$DEPLOY_TAG\]/,/## \[.*\]/p" CHANGELOG.md | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\n/g')
 
@@ -36,6 +35,14 @@ EOF
     rm slack_temp_notification.json
 }
 
+# Usage: DEPLOY_TAG="1.0.0" DEPLOY_APP="Your APP" SLACK_CHANGELOG_CHANNEL="#slack-detail-deploy-channel" SLACK_HOOK_URL="https://hooks.slack.com/services/AAA/BBB/some_hash" ./jaiminho slack --short
+notify_slack_short() {
+    echo "Notifying slack ..."
+
+    # Notify Slack
+    curl -X POST --data-urlencode "payload={\"text\": \"Project *$DEPLOY_APP* deployed with tag *$DEPLOY_TAG*. Changelog at *$SLACK_CHANGELOG_CHANNEL*\"}" "$SLACK_HOOK_URL"
+}
+
 # Usage: DEPLOY_TAG="1.0.0" NEW_RELIC_APP_ID="some_id" NEW_RELIC_API_KEY="some_api_key" ./jaiminho newrelic
 notify_newrelic() {
     echo "Notifying New Relic ..."
@@ -49,8 +56,12 @@ version() {
 
 #Starting point
 if [ "$1" == "slack" ]; then
-    notify_slack
-    exit 0
+   if [ "$2" == "--short" ]; then
+       notify_slack_short
+       exit 0
+   fi
+   notify_slack
+   exit 0
 fi
 
 if [ "$1" == "newrelic" ]; then
@@ -65,3 +76,4 @@ fi
 
 echo "Usage: ./jaiminho <--version|newrelic|slack>"
 exit 1
+a
