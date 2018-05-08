@@ -50,7 +50,7 @@ notify_newrelic() {
 }
 
 version() {
-    local version="0.0.1"
+    local version="0.0.3"
     echo "Jaiminho $version"
 }
 
