@@ -1,6 +1,9 @@
 # jaiminho
 A CLI tool for deployment notifications. Currently support Slack and New Relic
 
+![Jaiminho]
+(https://github.com/emerleite/jaiminho/blob/master/jaiminho.jpeg?raw=true)
+
 ## Installing
 
 ### Last stable version
