@@ -8,7 +8,7 @@ A CLI tool for deployment notifications. Currently support Slack and New Relic
 ### Last stable version
 
 ```sh
-$ curl https://raw.githubusercontent.com/emerleite/jaiminho/0.0.3/jaiminho > ./jaiminho
+$ curl https://raw.githubusercontent.com/emerleite/jaiminho/0.0.4/jaiminho > ./jaiminho
 $ chmod 755 ./jaiminho
 ```
 
