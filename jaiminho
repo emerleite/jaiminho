@@ -6,7 +6,7 @@ notify_slack() {
     echo "Notifying slack ..."
 
     # Cut the CHANGELOG for TAG
-    DEPLOY_DESCRIPTION=$(sed -n "/## \[$DEPLOY_TAG\]/,/## \[.*\]/p" CHANGELOG.md | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\n/g')
+    DEPLOY_DESCRIPTION=$(sed -n "/## \[$DEPLOY_TAG\]/,/## \[.*\]/p" CHANGELOG.md | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\n/g' | sed -e 's/"/\\"/g')
 
     # Generate Slack Payload Notification
     cat <<EOF > slack_temp_notification.json
