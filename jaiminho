@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Make sure you have a CHANGELOG.md based on https://keepachangelog.com
 # Usage: DEPLOY_TAG="1.0.0" DEPLOY_APP="Your APP" SLACK_HOOK_URL="https://hooks.slack.com/services/AAA/BBB/some_hash" ./jaiminho slack
