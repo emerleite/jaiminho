@@ -1,12 +1,22 @@
-#!/bin/sh
+#!/bin/bash
 
 # Make sure you have a CHANGELOG.md based on https://keepachangelog.com
 # Usage: DEPLOY_TAG="1.0.0" DEPLOY_APP="Your APP" SLACK_HOOK_URL="https://hooks.slack.com/services/AAA/BBB/some_hash" ./jaiminho slack
 notify_slack() {
     echo "Notifying slack ..."
+    DESCRIPTION_FILE="./DEPLOY_DESCRIPTION.tmp"
+    if [ -f "$DESCRIPTION_FILE" ];
+    then
+      DEPLOY_DESCRIPTION=$(cat $DESCRIPTION_FILE | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\n/g' | sed -e 's/"/\\"/g')
+    else
+      # Cut the CHANGELOG for TAG
+      DEPLOY_DESCRIPTION=$(sed -n "/## \[$DEPLOY_TAG\]/,/## \[.*\]/p" CHANGELOG.md | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\n/g' | sed -e 's/"/\\"/g')
+    fi
 
-    # Cut the CHANGELOG for TAG
-    DEPLOY_DESCRIPTION=$(sed -n "/## \[$DEPLOY_TAG\]/,/## \[.*\]/p" CHANGELOG.md | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\n/g' | sed -e 's/"/\\"/g')
+    if [-z "$DEPLOY_TITLE"];
+    then
+      DEPLOY_TITLE=Changelog
+    fi
 
     # Generate Slack Payload Notification
     cat <<EOF > slack_temp_notification.json
@@ -18,7 +28,7 @@ notify_slack() {
       "mrkdwn_in": ["fields"],
       "fields": [
         {
-          "title": "Changelog",
+          "title": "$DEPLOY_TITLE",
           "value": "$DEPLOY_DESCRIPTION",
           "short": false
         }
@@ -76,4 +86,3 @@ fi
 
 echo "Usage: ./jaiminho <--version|newrelic|slack>"
 exit 1
-a
